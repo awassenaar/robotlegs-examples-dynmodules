@@ -1,0 +1,37 @@
+	DynModules
+	
+	Introduction
+
+	DynModules is a Flex 4 example that uses the Robotlegs AS3 micro-architecture
+	framework and Joel Hooks version of the Robotlegs Modular Utility to communicate
+	between modules that can be loaded dynamically. The example is loosely based on
+	Joel Hooks great Modular Doodads application and on information I found in the Robotlegs Knowledge Base.
+	
+	"Official Robotlegs Website":http://www.robotlegs.org
+	"Robotlegs Knowledge Base":http://joelhooks.com/2010/05/02/modular-robotlegs/
+	"Joel Hooks Modular Doodads Application":http://joelhooks.com/2010/05/02/modular-robotlegs/
+	
+	The DynModules example consists of a main application and selectable modules for
+	input (sliders or form) and for output (piechart or columnchart). By loading the
+	input and output modules at runtime, the appearance of the application can
+	easily be made device or user specific (e.g. slider inputs for a touch-enabled
+	device, an extended form for an administrator).
+
+	The modules and main application are wired together by Robotlegs and the Modular
+	Utility using automated, metadata based Dependency Injection. Not only does this
+	greatly reduce the amount of code needed, it also structures the application and
+	makes alterations much easier.
+	
+	Setup
+	The example consists of a main application and four selectable runtime modules: "In1.swf"(sliders),
+	"In2.swf"(form), "Out1.swf"(piechart) and "Out2.swf"(barchart).
+	
+	To run the application, first compile the four modules In1.mxml, In2.mxml, Out1.mxml and Out2.mxml and then
+	place the swfs in the bin subdirectories defined by the url property of the corresponding moduleLoader.
+	(e.g. bin/com/riamore/labs/robotlegs/examples/dynmodules/modules/in1/In1.swf) 
+	
+	Terms of Use	
+	Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	Arjen Wassenaar RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules 

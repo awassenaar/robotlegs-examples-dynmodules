@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--- 
+	The DynModules example is roughly based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	(http://github.com/joelhooks/robotlegs-examples-ModularDoodads). For more background information also 
+	see "WTF is Modular" (http://joelhooks.com/2010/05/02/modular-robotlegs/).
+	
+	<p>
+	The example consists of a main application and four selectable runtime modules: "In1.swf"(sliders),
+	"In2.swf"(form) , "Out1.swf"(piechart) and "Out2.swf"(barchart).</p>
+	
+	<p>
+	At application startup all four modules are mapped for automatic injection in DynmodulesContext.
+	Which modules actually communicate with eachother is dependendent of the module selection in DynModules.mxml.
+	This main view just serves as a module loader. It contains all necessary code for loading and selection of 
+	the modules, but has no access to the modules in the present configuration.</p>  
+	
+	@internal Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	@internal Loosely based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	
+	@author Arjen Wassenaar   RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules  
+	
+-->
+
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:dynmodules="com.riamore.labs.robotlegs.examples.dynmodules.*" 
+			   minWidth="680" minHeight="480" contentCreationComplete="init()" >
+			   
+	<fx:Script>
+    <![CDATA[
+		 import flash.events.Event;
+         import spark.events.IndexChangeEvent; 
+		 import mx.events.ItemClickEvent;
+		
+		 // initialize moduleLoader listeners
+		 public function init():void 
+		 {
+			moduleLoaderIn.addEventListener("progress", onProgressIn);
+			moduleLoaderOut.addEventListener("progress", onProgressOut);
+			moduleLoaderIn.addEventListener("ready", onReadyIn);
+			moduleLoaderOut.addEventListener("ready", onReadyOut);
+		 }
+		 
+		 public function onProgressIn(event:Event):void
+		 {
+			 progressIn.alpha = 1; 
+		 }
+		 
+		 public function onProgressOut(event:Event):void
+		 {
+			 progressOut.alpha = 1; 
+		 }
+		 
+		 public function onReadyIn(event:Event):void 
+		 {
+			progressIn.alpha = 0.2;
+		 }
+		 
+		 public function onReadyOut(event:Event):void 
+		 {
+			progressOut.alpha = 0.2;
+		 }
+
+         private function changeInSelection(event:ItemClickEvent): void
+		 {
+             if (event.item == "Module In 1")
+			 {
+				moduleLoaderIn.url = "com/riamore/labs/robotlegs/examples/dynmodules/modules/in1/In1.swf";
+			 }
+			 else
+			 {
+				moduleLoaderIn.url = "com/riamore/labs/robotlegs/examples/dynmodules/modules/in2/In2.swf";
+			 }
+         }
+		 
+		 private function changeOutSelection(event:ItemClickEvent): void
+		 {
+             
+			 if (event.item == "Module Out 1")
+			 
+			 {
+				moduleLoaderOut.url = "com/riamore/labs/robotlegs/examples/dynmodules/modules/out1/Out1.swf";
+
+			 }
+			 else
+			 {
+				moduleLoaderOut.url = "com/riamore/labs/robotlegs/examples/dynmodules/modules/out2/Out2.swf";
+				
+			 }
+         }
+		 
+    ]]>
+    </fx:Script>
+	<fx:Declarations>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<dynmodules:DynModulesContext contextView="{this}"/>
+	
+	</fx:Declarations>
+	
+		<s:Label x="20" y="10" text="Select the input panel "/>
+		<mx:TabBar x="20" y="35" id="tabbarIn"  itemClick="changeInSelection(event);"  dataProvider="{['Module In 1','Module In 2']}" />
+        <mx:ProgressBar x="190" y="10" width="75" id="progressIn" source="{moduleLoaderIn}" />
+		<mx:ModuleLoader x="20" y="59" id="moduleLoaderIn" url="com/riamore/labs/robotlegs/examples/dynmodules/modules/in1/In1.swf" 
+		 progress="onProgressIn(event)" ready="onReadyIn(event)" applicationDomain = "{ApplicationDomain.currentDomain}" />
+		
+		 <s:Label x="290" y="10" text="Select the output panel "/>
+        <mx:TabBar x="290" y="35" id="tabBarOut" itemClick="changeOutSelection(event);" dataProvider="{['Module Out 1','Module Out 2']}" /> 
+        <mx:ProgressBar x="480" y="10" width="75" id="progressOut" source="{moduleLoaderOut}" />
+		<mx:ModuleLoader x="290" y="59" id="moduleLoaderOut" url="com/riamore/labs/robotlegs/examples/dynmodules/modules/out1/Out1.swf" 
+			applicationDomain = "{ApplicationDomain.currentDomain}" />
+		
+</s:Application>

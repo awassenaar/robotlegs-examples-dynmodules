@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--- 
+	View of module In2. This view contains an input form and a form validator.
+	It dispatches an InputFormEvent when a correct form is submitted.
+	
+	@internal Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	@internal Loosely based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	
+	@author Arjen Wassenaar   RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules  
+-->
+<mx:Module 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx"
+			width="100%" height="100%" 
+			implements="com.riamore.labs.robotlegs.examples.dynmodules.interfaces.IIn2" >
+	 
+	<fx:Script>
+		<![CDATA[
+			
+			import org.robotlegs.core.IInjector;
+			import org.robotlegs.utilities.modular.core.IModule;
+			import org.robotlegs.utilities.modular.core.IModuleContext;
+			
+			import mx.events.ValidationResultEvent;
+			import com.riamore.labs.robotlegs.examples.dynmodules.common.events.InputFormEvent;
+			
+			// The following is modular Robotlegs specific
+			//***********************************************************************************
+			
+			protected var context:IModuleContext;
+           
+			[Inject]
+			public function set parentInjector(value:IInjector):void
+			{
+				context = new In2Context(this, value);
+			}
+			
+			public function dispose():void
+			{
+				context.dispose();
+				context = null;
+			}
+			
+			//***********************************************************************************
+			
+			
+			private function validateAndSubmitNumbers():void
+			{
+                if(validateInputs([inputOrange,inputGreen,inputBlue]))
+				{
+					errorText.text = "";
+					var or:Number = Number(inputOrange.text);
+					var gr:Number = Number(inputGreen.text);
+					var bl:Number = Number(inputBlue.text);
+				
+					//dispatch an event to the mediator
+					dispatchEvent(new InputFormEvent(InputFormEvent.CHANGE, new Array(or, gr, bl)));
+				}
+				else
+				{
+					errorText.text = "please choose a number\nbetween 0 and 10";
+				}
+			}
+			
+			private function validateInputs(inputs:Array):Boolean
+			{
+				var allInputsValid:Boolean = true;
+				for (var i:int = 0; i < inputs.length; i++)
+				{	
+					numValidator.source = inputs[i];
+					var vResult:ValidationResultEvent= numValidator.validate();
+					if (vResult.type == ValidationResultEvent.INVALID)
+					{
+						allInputsValid = false;
+					}
+				}	
+				return allInputsValid;	
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<mx:SolidColor id= "sc_orange" color="0xFF8701" alpha=".85"/>
+		<mx:SolidColor id= "sc_green" color="0xA5DC4E" alpha=".85"/>
+		<mx:SolidColor id= "sc_blue" color="0x1B95F9" alpha=".85"/>
+		
+		<mx:NumberValidator id="numValidator" minValue="0" maxValue="10" domain="real" property="text" />
+
+	</fx:Declarations>
+	
+	
+	<s:Panel width="250" height="400" title="Module In 2: Form Input" 
+             color="0x000000" 
+             borderAlpha="0.15">
+		<mx:Text x="20" y="30" text="enter numbers between 0 and 10" fontWeight="bold" />
+		<mx:Form id="myForm" width="250" paddingLeft="10" paddingTop="70" >
+			<mx:FormItem label="orange" color="0xFF8701" fontWeight="bold" >
+                <s:TextInput id="inputOrange" color="0x000000" maxChars="4" restrict="0-9 \." width="100%"/>
+            </mx:FormItem>
+			<mx:FormItem label="green" color="0xA5DC4E" fontWeight="bold" >
+                <s:TextInput id="inputGreen" color="0x000000"  maxChars="4" restrict="0-9 \." width="100%"/>
+            </mx:FormItem>
+			<mx:FormItem label="blue" color="0x1B95F9" fontWeight="bold" >
+                <s:TextInput id="inputBlue"  color="0x000000" maxChars="4" restrict="0-9 \." width="100%"/>
+            </mx:FormItem>
+			<mx:FormItem direction="horizontal">
+				<s:Button id="submit" label="Submit"  click="validateAndSubmitNumbers()" />
+			</mx:FormItem>
+			<mx:Text id="errorText" color="0xFF0000" paddingLeft="55" />
+		</mx:Form>
+	</s:Panel>
+</mx:Module>

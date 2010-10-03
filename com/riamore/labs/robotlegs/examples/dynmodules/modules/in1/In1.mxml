@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--- 
+	View of module In1. This view contains the sliders and slider specific functions.
+	It dispatches an InputSliderEvent when a slider position changes.
+	
+	@internal Customizing the track highlight skin on an MX HSlider control in Flex is based on an article by Peter de Haan
+	http://blog.flexexamples.com/2009/09/24/customizing-the-track-highlight-skin-on-a-halo-hslider-control-in-flex-4/
+	
+	@internal Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	@internal Loosely based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	
+	@author Arjen Wassenaar   RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules  
+	
+-->
+<mx:Module 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx"
+			width="100%" height="100%" 
+			implements="com.riamore.labs.robotlegs.examples.dynmodules.interfaces.IIn1" >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.riamore.labs.robotlegs.examples.dynmodules.common.model.vo.DataVO;
+			import flash.events.Event;
+			import org.robotlegs.core.IInjector;
+			import org.robotlegs.utilities.modular.core.IModule;
+			import org.robotlegs.utilities.modular.core.IModuleContext;
+			
+			import com.riamore.labs.robotlegs.examples.dynmodules.common.events.InputSliderEvent;
+			
+			
+			// The following is modular Robotlegs specific
+			//***********************************************************************************
+
+			protected var context:IModuleContext; 
+			
+			 
+			[Inject]
+			public function set parentInjector(value:IInjector):void
+			{
+				context = new In1Context(this, value);
+			}
+			
+			public function dispose():void
+			{
+				context.dispose();
+				context = null;
+			}
+			
+			//***********************************************************************************
+			
+			
+			//sliderChange is called with every movement of a slider
+			private function sliderChange(event:Event):void
+			{
+				var sliderVO:DataVO = new DataVO();
+				
+				sliderVO.color = event.target.id;
+				sliderVO.value = (event.currentTarget.value).toFixed(2);
+				//dispatch an event to the mediator	
+				dispatchEvent(new InputSliderEvent(InputSliderEvent.CHANGE, sliderVO));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+	
+	</fx:Declarations>
+	
+	<s:Panel width="250" height="400" title="Module In 1: Slider Input" 
+             color="0x000000" 
+             borderAlpha="0.15">
+	 <s:layout>
+            <s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"
+                                paddingLeft="10" paddingRight="10" 
+                                paddingTop="10" paddingBottom="10"/>
+    </s:layout>
+
+    <mx:VSlider id="orange" width="50" height="200" scaleX="1.25" scaleY="1.25" labels="[0,1,2,3,4,5,6,7,8,9,10]"
+            trackHighlightSkin="com.riamore.labs.robotlegs.examples.dynmodules.modules.in1.skins.CustomSliderTrackHighlightSkinOrange" 
+			showTrackHighlight="true"
+            liveDragging="true"
+			change="sliderChange(event)"
+            horizontalCenter="0" verticalCenter="0" />
+	<mx:VSlider id="green" width="30" height="190" scaleX="1.25" scaleY="1.25" 
+            trackHighlightSkin="com.riamore.labs.robotlegs.examples.dynmodules.modules.in1.skins.CustomSliderTrackHighlightSkinGreen" 
+			showTrackHighlight="true"
+            liveDragging="true"
+			change="sliderChange(event)"
+            horizontalCenter="0" verticalCenter="0" />
+	<mx:VSlider id="blue" width="30" height="190" scaleX="1.25" scaleY="1.25"
+            trackHighlightSkin="com.riamore.labs.robotlegs.examples.dynmodules.modules.in1.skins.CustomSliderTrackHighlightSkinBlue" 
+			showTrackHighlight="true"
+            liveDragging="true"
+			change="sliderChange(event)"
+            horizontalCenter="0" verticalCenter="0" />		
+	</s:Panel>
+</mx:Module>

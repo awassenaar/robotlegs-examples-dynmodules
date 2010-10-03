@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--- 
+	View of module Out2. This view contains a bar chart.
+	
+	@internal Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	@internal Loosely based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	@author Arjen Wassenaar   RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules  
+-->
+<mx:Module 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx"
+			width="100%" height="100%" 
+			implements="com.riamore.labs.robotlegs.examples.dynmodules.interfaces.IOut2" >
+	
+	<fx:Script>
+		<![CDATA[
+			import org.robotlegs.core.IInjector;
+			import org.robotlegs.utilities.modular.core.IModule;
+			import org.robotlegs.utilities.modular.core.IModuleContext;
+			
+			// The following is modular Robotlegs specific
+			//***********************************************************************************
+			
+			protected var context:IModuleContext;
+			
+			[Inject]
+			public function set parentInjector(value:IInjector):void
+			{
+				context = new Out2Context(this, value);
+			}
+			
+			public function dispose():void
+			{
+				context.dispose();
+				context = null;
+			}
+			
+			//***********************************************************************************
+
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		
+		<mx:SolidColor id= "sc_orange" color="0xFF8701" alpha=".85"/>
+		<mx:SolidColor id= "sc_green" color="0xA5DC4E" alpha=".85"/>
+		<mx:SolidColor id= "sc_blue" color="0x1B95F9" alpha=".85"/>
+		
+	</fx:Declarations>
+	
+	
+	<s:Panel  width="350" height="400" title="Module Out 2: ColumnChart"
+				color="0x000000" 
+				borderAlpha="0.15">
+		<s:layout>
+            <s:HorizontalLayout horizontalAlign="center" 
+                                paddingLeft="10" paddingRight="10" 
+                                paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		<mx:ColumnChart id="columnChart" width="250" height="350" >
+        <mx:horizontalAxis>
+           <mx:CategoryAxis  categoryField="color" />
+        </mx:horizontalAxis>
+        <mx:series>
+			<mx:ColumnSeries xField="color" yField="value" 
+			fontSize="12" fontWeight="bold" labelPosition="inside" fills="{[sc_orange, sc_green, sc_blue]}" >
+				<mx:showDataEffect>
+						<mx:SeriesInterpolate duration="500" />
+				</mx:showDataEffect>
+			</mx:ColumnSeries>
+        </mx:series>
+     </mx:ColumnChart>
+
+	</s:Panel>
+</mx:Module>

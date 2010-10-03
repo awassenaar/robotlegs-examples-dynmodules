@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--- 
+	View of module Out1. This view contains a pie chart.
+	
+	@internal Any portion of this example may be reused for any purpose where not licensed by another party restricting
+	such use. Please leave the credits intact.
+	
+	@internal Loosely based on Joel Hooks modular Robotlegs application "Modular Doodads"
+	
+	@author Arjen Wassenaar   RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules  
+-->
+<mx:Module 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx"
+			width="100%" height="100%" 
+			implements="com.riamore.labs.robotlegs.examples.dynmodules.interfaces.IOut1" >
+	
+	<fx:Script>
+		<![CDATA[
+			import org.robotlegs.core.IInjector;
+			import org.robotlegs.utilities.modular.core.IModule;
+			import org.robotlegs.utilities.modular.core.IModuleContext;
+			
+			// The following is modular Robotlegs specific
+			//***********************************************************************************
+
+			protected var context:IModuleContext;
+			
+			[Inject]
+			public function set parentInjector(value:IInjector):void
+			{
+				context = new Out1Context(this, value);
+			}
+			
+			public function dispose():void
+			{
+				context.dispose();
+				context = null;
+			}
+			
+			//***********************************************************************************
+			
+			
+			//displays the values in the piechart
+			private function displayData(data:Object, field:String, index:Number, percentValue:Number):String
+			{
+                var temp:String= (" " + percentValue).substr(0,6);
+                return data.color + '\n' + "Value : " + data.value + '\n' + temp + "%";
+            }
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		
+		<mx:SolidColor id= "sc_orange" color="0xFF8701" alpha=".85"/>
+		<mx:SolidColor id= "sc_green" color="0xA5DC4E" alpha=".85"/>
+		<mx:SolidColor id= "sc_blue" color="0x1B95F9" alpha=".85"/>
+		
+	</fx:Declarations>
+	
+	<s:Panel title="Module Out 1: PieChart" width="350" height="400" color="0x000000" borderAlpha="0.15">
+         <s:layout>
+            <s:HorizontalLayout horizontalAlign="center" 
+                                paddingLeft="10" paddingRight="10" 
+                                paddingTop="10" paddingBottom="10"/>
+        </s:layout>
+         <mx:PieChart id="pieChart" height="100%" width="100%" paddingRight="5" paddingLeft="5" color="0x323232" >
+			 <mx:series>
+				<mx:PieSeries field="value" fills="{[sc_orange, sc_green, sc_blue]}" labelPosition="inside" 
+				color="0x000000" fontSize="12" fontWeight="bold" labelFunction="displayData">
+					<mx:showDataEffect>
+						<mx:SeriesInterpolate duration="500" />
+					</mx:showDataEffect>
+				</mx:PieSeries>
+			</mx:series>
+
+        </mx:PieChart>
+        
+    </s:Panel>
+</mx:Module>
