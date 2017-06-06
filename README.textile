@@ -34,4 +34,5 @@
 	Any portion of this example may be reused for any purpose where not licensed by another party restricting
 	such use. Please leave the credits intact.
 	
-	Arjen Wassenaar RIAmore.com  demo: http://labs.riamore.com/content/robotlegs/examples/dynmodules 
+	Arjen Wassenaar RIAmore.com  demo: http://www.riamore.com/content/robotlegs/examples/dynmodules 
+	(link updated 20170605)
